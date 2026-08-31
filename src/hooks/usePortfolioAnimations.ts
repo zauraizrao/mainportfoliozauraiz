@@ -23,7 +23,8 @@ export function usePortfolioAnimations(root: RefObject<HTMLElement | null>) {
     const update = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
-    lenis.on('scroll', ScrollTrigger.update);
+    const updateScrollTriggers = () => ScrollTrigger.update();
+    lenis.on('scroll', updateScrollTriggers);
 
     const ctx = gsap.context(() => {
       gsap.from('.hero-word', { yPercent: 115, opacity: 0, rotate: 2, duration: 1.15, stagger: .09, ease: 'power4.out', delay: .1 });
@@ -77,6 +78,6 @@ export function usePortfolioAnimations(root: RefObject<HTMLElement | null>) {
       }
     }
 
-    return () => { magneticCleanups.forEach((cleanup) => cleanup()); ctx.revert(); lenis.destroy(); gsap.ticker.remove(update); ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); };
+    return () => { magneticCleanups.forEach((cleanup) => cleanup()); ctx.revert(); lenis.off('scroll', updateScrollTriggers); lenis.destroy(); gsap.ticker.remove(update); ScrollTrigger.getAll().forEach((trigger) => trigger.kill()); };
   }, [root]);
 }

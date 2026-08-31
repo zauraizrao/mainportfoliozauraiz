@@ -1,6 +1,7 @@
 'use client';
 
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, Check, Mail, MapPin, Menu, Phone, X } from 'lucide-react';
 import { portfolio } from '@/src/data/content';
 import { usePortfolioAnimations } from '@/src/hooks/usePortfolioAnimations';
@@ -17,20 +18,20 @@ export default function Home() {
   useEffect(() => {
     const seen = sessionStorage.getItem('zr-intro-seen');
     if (!seen && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setLoading(true);
-      const timer = window.setTimeout(() => { setLoading(false); sessionStorage.setItem('zr-intro-seen', 'true'); }, 1100);
-      return () => window.clearTimeout(timer);
+      const showTimer = window.setTimeout(() => setLoading(true), 0);
+      const hideTimer = window.setTimeout(() => { setLoading(false); sessionStorage.setItem('zr-intro-seen', 'true'); }, 1100);
+      return () => { window.clearTimeout(showTimer); window.clearTimeout(hideTimer); };
     }
   }, []);
 
-  async function submitForm(event: FormEvent<HTMLFormElement>) {
+  async function submitForm(event: SyntheticEvent<HTMLFormElement, SubmitEvent>) {
     event.preventDefault();
     setFormState('sending');
     const form = event.currentTarget;
     try {
       const formData = new FormData(form);
       const body = new URLSearchParams();
-      formData.forEach((value, key) => body.append(key, String(value)));
+      formData.forEach((value, key) => body.append(key, typeof value === 'string' ? value : value.name));
       const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
       if (!response.ok) throw new Error('Form submission failed');
       form.reset(); setFormState('sent');
@@ -39,7 +40,7 @@ export default function Home() {
 
   return (
     <div ref={root}>
-      {loading && <div className="preloader" role="status"><div><span>Z</span><span>A</span><span>U</span><span>R</span><span>A</span><span>I</span><span>Z</span></div><i /></div>}
+      {loading && <output className="preloader"><div><span>Z</span><span>A</span><span>U</span><span>R</span><span>A</span><span>I</span><span>Z</span></div><i /></output>}
       <div className="cursor" aria-hidden="true" />
 
       <header className="site-header">
@@ -67,7 +68,7 @@ export default function Home() {
             </h1>
           </div>
           <div className="hero-bottom">
-            <div className="portrait-frame"><div className="portrait-offset" aria-hidden="true" /><img src="/images/zauraiz-rao.png" alt="Portrait of Zauraiz Rao" width="360" height="360" fetchPriority="high" /><span>{portfolio.availability}</span></div>
+            <div className="portrait-frame"><div className="portrait-offset" aria-hidden="true" /><Image src="/images/zauraiz-rao.png" alt="Portrait of Zauraiz Rao" width={360} height={360} priority sizes="(max-width: 600px) 84px, 136px" /><span>{portfolio.availability}</span></div>
             <div className="hero-intro"><p>I build practical web products and business applications—and stay for the long-term support that keeps them useful.</p><div className="hero-actions"><a className="primary-button" href="#projects" data-magnetic>View selected work <ArrowDownRight size={18} /></a><a className="text-link" href={`mailto:${portfolio.email}`}>Contact me</a></div></div>
             <div className="hero-meta"><p>Working remotely from<br />Karachi, Pakistan</p><div className="socials" aria-label="Social links"><a href={portfolio.github} target="_blank" rel="noreferrer" aria-label="GitHub">GH</a><a href={portfolio.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">IN</a></div></div>
           </div>

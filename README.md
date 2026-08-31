@@ -1,6 +1,6 @@
 # Zauraiz Rao — Portfolio
 
-A production portfolio for Zauraiz Rao, built with React, Vinext/Vite, GSAP, ScrollTrigger, Lenis, TypeScript, and plain CSS. Content is centralized in `src/data/content.ts`.
+A production portfolio for Zauraiz Rao, built as a standard Next.js application with React, GSAP, ScrollTrigger, Lenis, TypeScript, and plain CSS. Content is centralized in `src/data/content.ts`.
 
 ## Local setup
 
@@ -17,15 +17,15 @@ Open the local URL printed in the terminal.
 npm run build
 ```
 
-The deployable client output is generated in `dist/client`.
+Next.js writes the optimized production application to `.next`.
 
 ## Deploy to Netlify
 
-Connect the repository in Netlify. The included `netlify.toml` supplies the build command, output directory, SPA redirect, and security headers. The contact form is configured for Netlify Forms; enable form detection in the Netlify project settings.
+Connect the repository in Netlify. Netlify detects the standard Next.js application and uses its maintained Next.js runtime; the included `netlify.toml` supplies the build command, output directory, and security headers. The contact form is configured for Netlify Forms, so enable form detection in the Netlify project settings.
 
 ## Deploy to Vercel
 
-Import the repository in Vercel. The included `vercel.json` supplies the build command, output directory, and fallback rewrite. The contact form includes a direct email fallback because Netlify Forms is not available on Vercel.
+Import the repository in Vercel. The included `vercel.json` identifies the standard Next.js framework, and Vercel handles the build and runtime automatically. The contact form includes a direct email fallback because Netlify Forms is not available on Vercel.
 
 ## Content edits
 
