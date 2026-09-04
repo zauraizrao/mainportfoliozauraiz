@@ -30,3 +30,17 @@ Import the repository in Vercel. The included `vercel.json` identifies the stand
 ## Content edits
 
 Update text, links, projects, skills, experience, education, and certificate details in `src/data/content.ts`. Shared visual tokens live at the top of `app/globals.css`.
+
+## Animation system
+
+The interaction layer lives in `src/hooks/usePortfolioAnimations.ts` and is scoped to the portfolio root with `gsap.context()` so animations and event listeners are cleaned up when the page unmounts.
+
+- GSAP controls the intro loader, hero sequence, section reveals, counters, magnetic controls, active navigation indicator, form feedback, and footer entrance.
+- ScrollTrigger drives the condensed navigation, page progress, pinned experience chapters, desktop horizontal project gallery, and section-based animation timing.
+- Lenis provides smooth wheel scrolling and runs from GSAP's ticker so scrolling and ScrollTrigger stay synchronized.
+- ScrollToPlugin handles internal navigation with the fixed-header offset.
+- Desktop-only pinning is isolated with `gsap.matchMedia()`; viewports at 900px and below use readable vertical experience and project cards.
+- `prefers-reduced-motion` disables the loader, smooth scrolling, looping motion, pinning, and reveal effects while keeping all content visible and native anchor navigation available.
+- The intro is shown once per browser tab session via `sessionStorage`; repeat views receive a short fade instead of the full counter sequence.
+
+When adding a section, use transform/opacity-based motion, place setup inside the scoped hook, add every manual listener to its cleanup list, and call `ScrollTrigger.refresh()` after layout-affecting assets or content change.
