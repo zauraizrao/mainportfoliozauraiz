@@ -8,7 +8,12 @@ const sans = Space_Grotesk({ variable: '--font-sans', subsets: ['latin'] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://zauraizrao.netlify.app'),
   title: 'Zauraiz Rao — Full-Stack & WordPress Developer',
-  description: 'Full-Stack Web Developer and Custom WordPress Developer building practical web products from Karachi, Pakistan.',
+  description: 'Zauraiz Rao is a full-stack and custom WordPress developer in Karachi, Pakistan, building practical websites, web products, and business applications with dependable long-term support.',
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml', sizes: 'any' }],
+    shortcut: ['/favicon.svg'],
+    apple: [{ url: '/favicon.svg', type: 'image/svg+xml', sizes: 'any' }],
+  },
   openGraph: {
     title: 'Zauraiz Rao — Full-Stack & Custom WordPress Developer',
     description: 'Practical web products, business applications, and long-term website support.',

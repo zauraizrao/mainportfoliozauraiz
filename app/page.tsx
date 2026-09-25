@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { SyntheticEvent, useCallback, useRef, useState } from 'react';
 import { ArrowDown, ArrowDownRight, ArrowUpRight, Check, Mail, MapPin, Menu, Phone, X } from 'lucide-react';
 import { portfolio } from '@/src/data/content';
@@ -25,7 +24,7 @@ export default function Home() {
       const formData = new FormData(form);
       const body = new URLSearchParams();
       formData.forEach((value, key) => body.append(key, typeof value === 'string' ? value : value.name));
-      const response = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
+       const response = await fetch(form.action, { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' }, body: body.toString() });
       if (!response.ok) throw new Error('Form submission failed');
       form.reset();
       setFormState('sent');
@@ -76,14 +75,12 @@ export default function Home() {
             </h1>
           </div>
           <div className="hero-bottom">
-            <div className="portrait-frame" data-cursor-grow><div className="portrait-offset" aria-hidden="true" /><Image src="/images/zauraiz-rao.png" alt="Portrait of Zauraiz Rao" width={360} height={360} priority sizes="(max-width: 600px) 84px, 136px" /><span>{portfolio.availability}</span></div>
+             <div className="availability-badge"><span className="availability-dot" />{portfolio.availability}</div>
             <div className="hero-intro"><p>I build practical web products and business applications—and stay for the long-term support that keeps them useful.</p><div className="hero-actions"><a className="primary-button" href="#projects" data-magnetic>View selected work <ArrowDownRight size={18} /></a><a className="text-link" href={`mailto:${portfolio.email}`}>Contact me</a></div></div>
             <div className="hero-meta"><p>Working remotely from<br />Karachi, Pakistan</p><div className="socials" aria-label="Social links"><a href={portfolio.github} target="_blank" rel="noreferrer" aria-label="GitHub">GH</a><a href={portfolio.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">IN</a></div></div>
           </div>
           <a className="scroll-cue" href="#about" aria-label="Scroll down to About"><span>Scroll</span><ArrowDown size={15} /></a>
         </section>
-
-        <div className="role-strip" aria-label="Specialties"><div className="role-track">{[0, 1].map((copy) => <div className="role-set" key={copy}><span>React & Node.js</span><b>✦</b><span>Custom WordPress</span><b>✦</b><span>Shopify Development</span><b>✦</b><span>Long-term Support</span><b>✦</b></div>)}</div></div>
 
         <section id="about" className="about section-pad">
           <div className="section-label" data-reveal><span>01</span><p>About</p></div>
@@ -92,7 +89,7 @@ export default function Home() {
             <div className="about-details"><p className="bio-line">{portfolio.intro}</p><p className="bio-line">From custom WordPress and PHP builds to React applications and Shopify stores, the focus stays the same: clean interfaces, sound engineering, and dependable support after launch.</p></div>
           </div>
           <div className="about-facts"><div data-chip><small>Based in</small><strong>{portfolio.location}</strong></div><div data-chip><small>Languages</small><strong>English / Urdu</strong></div><div data-chip><small>Now</small><strong>Remote contract work</strong></div></div>
-          <div className="stats" aria-label="Portfolio facts"><div data-reveal><strong data-count="3">03</strong><span>Real roles</span></div><div data-reveal><strong data-count="5">05</strong><span>Selected projects</span></div><div data-reveal><strong data-count="12">12</strong><span>Listed technologies</span></div></div>
+          <div className="stats" aria-label="Portfolio facts"><div data-reveal><strong data-count="3">03</strong><span>Real roles</span></div><div data-reveal><strong data-count={portfolio.projects.length}>{String(portfolio.projects.length).padStart(2, '0')}</strong><span>Selected projects</span></div><div data-reveal><strong data-count="12">12</strong><span>Listed technologies</span></div></div>
         </section>
 
         <section id="experience" className="experience section-pad ink-section">
@@ -112,9 +109,9 @@ export default function Home() {
         </section>
 
         <section id="projects" className="projects-pin">
-          <div className="projects-intro"><div className="section-label light"><span>04</span><p>Selected work</p></div><h2 data-build><span className="build-line">Five builds.</span><br /><span className="build-line"><em>Five real briefs.</em></span></h2><p>Scroll to explore</p></div>
-          <div className="project-progress" aria-live="polite"><strong><span>01</span>/05</strong><i><span /></i></div>
-          <div className="project-track">{portfolio.projects.map((project) => <article className={`project-card ${project.color}`} data-project-card key={project.title}><div className="project-top"><span>{project.number}</span><span>{'date' in project ? project.date : 'Selected project'}</span></div><div className="project-content"><p>{project.category}</p><h3>{project.title}</h3><p className="project-description">{project.description}</p></div>{'url' in project ? <a href={project.url} target="_blank" rel="noreferrer" data-magnetic>Visit live site <ArrowUpRight /></a> : <span className="project-note">{project.note}</span>}</article>)}</div>
+           <div className="projects-intro"><div className="section-label light"><span>04</span><p>Selected work</p></div><h2 data-build><span className="build-line">Nine builds.</span><br /><span className="build-line"><em>Real briefs.</em></span></h2><p>Scroll to explore</p></div>
+           <div className="project-progress" aria-live="polite"><strong><span>01</span>/{String(portfolio.projects.length).padStart(2, '0')}</strong><i><span /></i></div>
+           <div className="project-track">{portfolio.projects.map((project) => <article className={`project-card ${project.color}`} data-project-card key={project.title}><div className="project-top"><span>{project.number}</span><span>{'date' in project ? project.date : 'Selected project'}</span></div><div className="project-content"><p>{project.category}</p><h3>{project.title}</h3><p className="project-description">{project.description}</p></div><a href={project.url} target="_blank" rel="noreferrer" data-magnetic>Visit live site <ArrowUpRight /></a></article>)}</div>
         </section>
 
         <section id="certificates" className="credentials section-pad">
@@ -127,7 +124,7 @@ export default function Home() {
           <div className="section-label light" data-reveal><span>06</span><p>Contact</p></div>
           <div className="contact-grid">
             <div className="contact-intro"><p data-reveal>Have a useful idea?</p><h2 data-build><span className="build-line">Let&apos;s make it</span><br /><span className="build-line"><em>work online.</em></span></h2><div className="contact-links"><a href={`mailto:${portfolio.email}`}><Mail />{portfolio.email}</a><a href={`tel:${portfolio.phone.replace(/\s/g, '')}`}><Phone />{portfolio.phone}</a><span><MapPin />{portfolio.location}</span><a href={portfolio.github} target="_blank" rel="noreferrer"><span className="contact-monogram">GH</span>GitHub</a><a href={portfolio.linkedin} target="_blank" rel="noreferrer"><span className="contact-monogram">IN</span>LinkedIn</a></div></div>
-            <form name="contact" method="POST" data-netlify="true" onSubmit={submitForm}>
+             <form name="contact" action="https://formspree.io/f/mgavzpvb" method="POST" onSubmit={submitForm}>
               <input type="hidden" name="form-name" value="contact" /><p className="hidden-field"><label>Do not fill this out: <input name="bot-field" /></label></p>
               <label className="contact-field"><span>Your name</span><input name="name" type="text" autoComplete="name" required placeholder="How should I address you?" /><i aria-hidden="true" /></label>
               <label className="contact-field"><span>Email address</span><input name="email" type="email" autoComplete="email" required placeholder="you@company.com" /><i aria-hidden="true" /></label>
@@ -138,7 +135,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="closing-cta" aria-label="Selected projects and contact"><strong data-closing-count>05</strong><div><span>Selected projects</span><a href="#contact" data-magnetic>Let&apos;s talk <ArrowUpRight /></a></div></section>
+       <section className="closing-cta" aria-label="Selected projects and contact"><strong data-closing-count>{String(portfolio.projects.length).padStart(2, '0')}</strong><div><span>Selected projects</span><a href="#contact" data-magnetic>Let&apos;s talk <ArrowUpRight /></a></div></section>
       </main>
 
       <footer><a className="wordmark" href="#top" data-footer-item><span>ZR</span></a><p data-footer-item>© {new Date().getFullYear()} Zauraiz Rao</p><div data-footer-item><a href={portfolio.github} target="_blank" rel="noreferrer">GitHub</a><a href={portfolio.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href="#top">Back to top ↑</a></div></footer>

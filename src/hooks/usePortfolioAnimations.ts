@@ -47,7 +47,7 @@ export function usePortfolioAnimations(root: RefObject<HTMLElement | null>, opti
         .from('.site-header .wordmark, .desktop-nav a, .nav-cta, .menu-button', { y: -18, autoAlpha: 0, duration: .72, stagger: .065, ease: 'power3.out' })
         .from('.hero-word', { yPercent: 115, autoAlpha: 0, rotate: 2, duration: 1.12, stagger: .095, ease: 'power4.out' }, '-=.42')
         .from('.hero-kicker', { y: 24, autoAlpha: 0, duration: .7, ease: 'power3.out' }, '-=.84')
-        .from('.portrait-frame', { scale: .82, rotate: -4, autoAlpha: 0, duration: .9, ease: 'back.out(1.4)' }, '-=.7')
+        .from('.availability-badge', { y: 24, autoAlpha: 0, duration: .7, ease: 'power3.out' }, '-=.7')
         .from('.hero-intro, .hero-meta', { y: 24, autoAlpha: 0, duration: .7, stagger: .12, ease: 'power3.out' }, '-=.58')
         .from('.socials a', { y: 15, scale: .65, autoAlpha: 0, duration: .5, stagger: .08, ease: 'back.out(1.8)' }, '-=.42')
         .from('.scroll-cue', { y: 12, autoAlpha: 0, duration: .5, ease: 'power2.out' }, '-=.25');
@@ -75,11 +75,6 @@ export function usePortfolioAnimations(root: RefObject<HTMLElement | null>, opti
       }
 
       gsap.to('.scroll-cue svg', { y: 7, repeat: -1, yoyo: true, duration: .72, ease: 'sine.inOut' });
-      gsap.to('.portrait-frame img', { y: -7, rotate: .7, repeat: -1, yoyo: true, duration: 2.9, ease: 'sine.inOut' });
-      gsap.to('.portrait-frame', { yPercent: 22, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: .8 } });
-      gsap.to('.portrait-offset', { yPercent: -16, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 1.2 } });
-
-      const marqueeTweens: gsap.core.Tween[] = [];
       const createMarquee = (containerSelector: string, trackSelector: string, duration: number) => {
         const container = element.querySelector<HTMLElement>(containerSelector);
         const track = element.querySelector<HTMLElement>(trackSelector);
@@ -90,9 +85,7 @@ export function usePortfolioAnimations(root: RefObject<HTMLElement | null>, opti
         container.addEventListener('mouseenter', pause);
         container.addEventListener('mouseleave', resume);
         cleanups.push(() => { container.removeEventListener('mouseenter', pause); container.removeEventListener('mouseleave', resume); });
-        marqueeTweens.push(tween);
       };
-      createMarquee('.role-strip', '.role-track', 22);
       createMarquee('.skills-marquee', '.skills-marquee-track', 34);
 
       gsap.set('.scroll-progress span', { transformOrigin: 'left center', scaleX: 0 });
