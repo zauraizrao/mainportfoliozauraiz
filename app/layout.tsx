@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://zauraizrao.netlify.app'),
   title: 'Zauraiz Rao — Full-Stack & WordPress Developer',
   description: 'Zauraiz Rao is a full-stack and custom WordPress developer in Karachi, Pakistan, building practical websites, web products, and business applications with dependable long-term support.',
+  verification: {
+    google: 'jrWj9KSDHG6BNaot-B60Oy2p2CM5WAU4xp8J-bC5x9c',
+  },
   icons: {
     icon: [{ url: '/favicon.svg', type: 'image/svg+xml', sizes: 'any' }],
     shortcut: ['/favicon.svg'],
